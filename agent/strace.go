@@ -1,5 +1,0 @@
-package agent
-
-func main() {
-
-}
