@@ -1,17 +1,18 @@
-package agent
+package main
 
 import (
 	"fmt"
 	"os"
 	"os/exec"
 	"syscall"
+	"system-call-analysis/agent/systemcall"
 )
 
 func main() {
 	var regs syscall.PtraceRegs
-	var ss syscallCounter
+	var ss systemcall.SyscallCounter
 
-	ss = ss.init()
+	ss = ss.Init()
 
 	fmt.Printf("Run %v\n", os.Args[1:])
 
@@ -45,7 +46,8 @@ func main() {
 			// Uncomment to show each syscall as it's called
 			// name := ss.getName(regs.Orig_rax)
 			// fmt.Printf("%s\n", name)
-			ss.inc(regs.Orig_rax)
+			//19588
+			ss.Inc(regs.Orig_rax)
 		}
 
 		err = syscall.PtraceSyscall(pid, 0)
@@ -61,5 +63,5 @@ func main() {
 		exit = !exit
 	}
 
-	ss.print()
+	ss.Print()
 }

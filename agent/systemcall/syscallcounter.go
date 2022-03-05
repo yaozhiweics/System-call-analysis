@@ -1,4 +1,4 @@
-package agent
+package systemcall
 
 import (
 	"fmt"
@@ -8,16 +8,16 @@ import (
 	sec "github.com/seccomp/libseccomp-golang"
 )
 
-type syscallCounter []int
+type SyscallCounter []int
 
 const maxSyscalls = 303
 
-func (s syscallCounter) init() syscallCounter {
-	s = make(syscallCounter, maxSyscalls)
+func (s SyscallCounter) Init() SyscallCounter {
+	s = make(SyscallCounter, maxSyscalls)
 	return s
 }
 
-func (s syscallCounter) inc(syscallID uint64) error {
+func (s SyscallCounter) Inc(syscallID uint64) error {
 	if syscallID > maxSyscalls {
 		return fmt.Errorf("invalid syscall ID (%x)", syscallID)
 	}
@@ -26,7 +26,7 @@ func (s syscallCounter) inc(syscallID uint64) error {
 	return nil
 }
 
-func (s syscallCounter) print() {
+func (s SyscallCounter) Print() {
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 8, ' ', tabwriter.AlignRight|tabwriter.Debug)
 	for k, v := range s {
 		if v > 0 {
@@ -37,7 +37,7 @@ func (s syscallCounter) print() {
 	w.Flush()
 }
 
-func (s syscallCounter) getName(syscallID uint64) string {
+func (s SyscallCounter) getName(syscallID uint64) string {
 	name, _ := sec.ScmpSyscall(syscallID).GetName()
 	return name
 }
