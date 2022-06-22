@@ -1,0 +1,13 @@
+remote: [127.0.0.1:8086]
+token: abcde
+
+id_ip_prefix: 192.168
+all_ip_prefix:
+  - 127.0
+  - 192.168.
+# 本机性能汇报时间间隔
+period: 60
+time_heart: 6
+try_num: 2
+time_out: 10
+try_time: 3

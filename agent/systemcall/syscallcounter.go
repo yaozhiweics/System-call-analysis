@@ -1,43 +1,35 @@
 package systemcall
 
-import (
-	"fmt"
-	"os"
-	"text/tabwriter"
+// type SyscallCounter []int
 
-	sec "github.com/seccomp/libseccomp-golang"
-)
+// const maxSyscalls = 303
 
-type SyscallCounter []int
+// func (s SyscallCounter) Init() SyscallCounter {
+// 	s = make(SyscallCounter, maxSyscalls)
+// 	return s
+// }
 
-const maxSyscalls = 303
+// func (s SyscallCounter) Inc(syscallID uint64) error {
+// 	if syscallID > maxSyscalls {
+// 		return fmt.Errorf("invalid syscall ID (%x)", syscallID)
+// 	}
 
-func (s SyscallCounter) Init() SyscallCounter {
-	s = make(SyscallCounter, maxSyscalls)
-	return s
-}
+// 	s[syscallID]++
+// 	return nil
+// }
 
-func (s SyscallCounter) Inc(syscallID uint64) error {
-	if syscallID > maxSyscalls {
-		return fmt.Errorf("invalid syscall ID (%x)", syscallID)
-	}
+// func (s SyscallCounter) Print() {
+// 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 8, ' ', tabwriter.AlignRight|tabwriter.Debug)
+// 	for k, v := range s {
+// 		if v > 0 {
+// 			name, _ := sec.ScmpSyscall(k).GetName()
+// 			fmt.Fprintf(w, "%d\t%s\n", v, name)
+// 		}
+// 	}
+// 	w.Flush()
+// }
 
-	s[syscallID]++
-	return nil
-}
-
-func (s SyscallCounter) Print() {
-	w := tabwriter.NewWriter(os.Stdout, 0, 0, 8, ' ', tabwriter.AlignRight|tabwriter.Debug)
-	for k, v := range s {
-		if v > 0 {
-			name, _ := sec.ScmpSyscall(k).GetName()
-			fmt.Fprintf(w, "%d\t%s\n", v, name)
-		}
-	}
-	w.Flush()
-}
-
-func (s SyscallCounter) getName(syscallID uint64) string {
-	name, _ := sec.ScmpSyscall(syscallID).GetName()
-	return name
-}
+// func (s SyscallCounter) getName(syscallID uint64) string {
+// 	name, _ := sec.ScmpSyscall(syscallID).GetName()
+// 	return name
+// }

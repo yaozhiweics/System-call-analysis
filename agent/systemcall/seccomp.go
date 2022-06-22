@@ -1,18 +1,12 @@
 package systemcall
 
-import (
-	"syscall"
+// func disallow(sc string) {
+// 	id, err := sec.GetSyscallFromName(sc)
+// 	if err != nil {
+// 		panic(err)
+// 	}
 
-	sec "github.com/seccomp/libseccomp-golang"
-)
-
-func disallow(sc string) {
-	id, err := sec.GetSyscallFromName(sc)
-	if err != nil {
-		panic(err)
-	}
-
-	filter, _ := sec.NewFilter(sec.ActAllow)
-	filter.AddRule(id, sec.ActErrno.SetReturnCode(int16(syscall.EPERM)))
-	filter.Load()
-}
+// 	filter, _ := sec.NewFilter(sec.ActAllow)
+// 	filter.AddRule(id, sec.ActErrno.SetReturnCode(int16(syscall.EPERM)))
+// 	filter.Load()
+// }

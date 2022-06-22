@@ -1,67 +1,59 @@
 package main
 
-import (
-	"fmt"
-	"os"
-	"os/exec"
-	"syscall"
-	"system-call-analysis/agent/systemcall"
-)
-
 func main() {
-	var regs syscall.PtraceRegs
-	var ss systemcall.SyscallCounter
+	// var regs syscall.PtraceRegs
+	// var ss systemcall.SyscallCounter
 
-	ss = ss.Init()
+	// ss = ss.Init()
 
-	fmt.Printf("Run %v\n", os.Args[1:])
+	// fmt.Printf("Run %v\n", os.Args[1:])
 
-	// Uncommenting this will cause the open syscall to return with Operation Not Permitted error
-	// disallow("open")
+	// // Uncommenting this will cause the open syscall to return with Operation Not Permitted error
+	// // disallow("open")
 
-	cmd := exec.Command(os.Args[1], os.Args[2:]...)
-	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Ptrace: true,
-	}
+	// cmd := exec.Command(os.Args[1], os.Args[2:]...)
+	// cmd.Stderr = os.Stderr
+	// cmd.Stdin = os.Stdin
+	// cmd.Stdout = os.Stdout
+	// cmd.SysProcAttr = &syscall.SysProcAttr{
+	// 	Ptrace: true,
+	// }
 
-	cmd.Start()
-	err := cmd.Wait()
-	if err != nil {
-		fmt.Printf("Wait returned: %v\n", err)
-	}
+	// cmd.Start()
+	// err := cmd.Wait()
+	// if err != nil {
+	// 	fmt.Printf("Wait returned: %v\n", err)
+	// }
 
-	pid := cmd.Process.Pid
-	exit := true
+	// pid := cmd.Process.Pid
+	// exit := true
 
-	for {
-		if exit {
-			err = syscall.PtraceGetRegs(pid, &regs)
-			if err != nil {
-				break
-			}
+	// for {
+	// 	if exit {
+	// 		err = syscall.PtraceGetRegs(pid, &regs)
+	// 		if err != nil {
+	// 			break
+	// 		}
 
-			// Uncomment to show each syscall as it's called
-			// name := ss.getName(regs.Orig_rax)
-			// fmt.Printf("%s\n", name)
-			//19588
-			ss.Inc(regs.Orig_rax)
-		}
+	// 		// Uncomment to show each syscall as it's called
+	// 		// name := ss.getName(regs.Orig_rax)
+	// 		// fmt.Printf("%s\n", name)
+	// 		//19588
+	// 		ss.Inc(regs.Orig_rax)
+	// 	}
 
-		err = syscall.PtraceSyscall(pid, 0)
-		if err != nil {
-			panic(err)
-		}
+	// 	err = syscall.PtraceSyscall(pid, 0)
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
 
-		_, err = syscall.Wait4(pid, nil, 0, nil)
-		if err != nil {
-			panic(err)
-		}
+	// 	_, err = syscall.Wait4(pid, nil, 0, nil)
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
 
-		exit = !exit
-	}
+	// 	exit = !exit
+	// }
 
-	ss.Print()
+	// ss.Print()
 }
