@@ -26,8 +26,9 @@ func main() {
 	allAddress = getAllIfAddress(conf.AllIpPrefix)
 	dataChannel := make(chan datas.ResponseData)
 
-	sysMonitor.StartSysCallMonitor(usedAddress, dataChannel)
 	go appclient.StartClient(conf.Remote, usedAddress, allAddress, dataChannel, conf)
+	sysMonitor.StartSysCallMonitor(usedAddress, dataChannel)
+
 	time.Sleep(10000 * time.Second)
 
 }

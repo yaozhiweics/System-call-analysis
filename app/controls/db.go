@@ -21,8 +21,8 @@ func InitDB() {
 	//defer Db.Close() // 注意这行代码要写在上面err判断的下面
 }
 
-func Insert(arg *datas.SyscallData) int {
-	sql := "insert into system_call(agent_ip,pid,event,time) values (?,?,?,?)"
+func Insert(arg *datas.Event, agentIp string) int {
+	sql := "insert into system_call(agent_ip,pid,event_name,time,cmdline,thread_start_time,cpu,memory) values (?,?,?,?,?,?,?,?)"
 	//2.预编译
 	strTmt, err := Db.Prepare(sql)
 	if err != nil {
@@ -30,7 +30,7 @@ func Insert(arg *datas.SyscallData) int {
 		return -1
 	}
 	//执行sql
-	r, err := strTmt.Exec(arg.AgentIp, arg.Pid, arg.Event, arg.Time) //id自动增长
+	r, err := strTmt.Exec(agentIp, arg.ProcessID, arg.EventName, arg.Timestamp, nil, nil, nil, nil) //id自动增长
 	if err != nil {
 		log.Errorln("Exec fail:", err)
 		return -1

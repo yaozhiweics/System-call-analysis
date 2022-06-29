@@ -60,22 +60,26 @@ func saveData(data string) {
 	err := json.Unmarshal([]byte(data), responseData)
 	if err != nil {
 		log.Error("parse json err: ", err)
-	}
-	//过滤消息，不处理初始化消息和心跳检测消息
-	if responseData.ModuleType == datas.MODULE_SYSCALL {
-		sysMsg := &datas.SyscallData{}
-		err := json.Unmarshal([]byte(responseData.Datas), sysMsg)
-		if err != nil {
-			log.Error("parse json err: ", err)
-		}
-		//插入数据库
+	} else {
+		//过滤消息，不处理初始化消息和心跳检测消息
+		if responseData.ModuleType == datas.MODULE_SYSCALL {
+			sysMsg := &datas.Event{}
+			err := json.Unmarshal([]byte(responseData.Datas), sysMsg)
+			//fmt.Println(sysMsg)
+			if err != nil {
+				log.Error("parse json err: ", err)
+			} else {
+				//插入数据库
+				//fmt.Println(sysMsg)
+				res := Insert(sysMsg, responseData.AgentIp)
+				if res < 0 {
+					log.Error("insert err:", sysMsg)
+				} else {
+					log.Info("inser success:", sysMsg)
+				}
+			}
 
-		res := Insert(sysMsg)
-		if res < 0 {
-			log.Error("insert err:", sysMsg)
-		} else {
-			log.Info("inser success:", sysMsg)
 		}
-
 	}
+
 }

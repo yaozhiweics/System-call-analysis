@@ -42,6 +42,47 @@ type SyscallData struct {
 	Event   string `json:"event"`
 	Time    string `json:"time"`
 }
+type Event struct {
+	Timestamp           int        `json:"timestamp"`
+	ThreadStartTime     int        `json:"threadStartTime"`
+	ProcessorID         int        `json:"processorId"`
+	ProcessID           int        `json:"processId"`
+	CgroupID            uint       `json:"cgroupId"`
+	ThreadID            int        `json:"threadId"`
+	ParentProcessID     int        `json:"parentProcessId"`
+	HostProcessID       int        `json:"hostProcessId"`
+	HostThreadID        int        `json:"hostThreadId"`
+	HostParentProcessID int        `json:"hostParentProcessId"`
+	UserID              int        `json:"userId"`
+	MountNS             int        `json:"mountNamespace"`
+	PIDNS               int        `json:"pidNamespace"`
+	ProcessName         string     `json:"processName"`
+	HostName            string     `json:"hostName"`
+	ContainerID         string     `json:"containerId"`
+	ContainerImage      string     `json:"containerImage"`
+	ContainerName       string     `json:"containerName"`
+	PodName             string     `json:"podName"`
+	PodNamespace        string     `json:"podNamespace"`
+	PodUID              string     `json:"podUID"`
+	EventID             int        `json:"eventId,string"`
+	EventName           string     `json:"eventName"`
+	ArgsNum             int        `json:"argsNum"`
+	ReturnValue         int        `json:"returnValue"`
+	StackAddresses      []uint64   `json:"stackAddresses"`
+	Args                []Argument `json:"args"` //Arguments are ordered according their appearance in the original event
+}
+
+// Argument holds the information for one argument
+type Argument struct {
+	ArgMeta
+	Value interface{} `json:"value"`
+}
+
+// ArgMeta describes an argument
+type ArgMeta struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
 
 //ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'yao321';
 
